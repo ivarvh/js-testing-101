@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
-import {Car, CarService} from './car.service';
-import {Observable} from 'rxjs';
-import {finalize, map} from 'rxjs/operators';
+import { Component } from '@angular/core';
+import { Car, CarService } from './car.service';
+import { Observable } from 'rxjs';
+import { finalize, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -31,10 +31,14 @@ export class AppComponent {
   }
 
   async getAllRedCarsAsPromiseWithStuffHappeningInBetween(): Promise<void> {
-    this.loading = true;
-    console.log(this.cars);
-    this.cars = await this.getAllRedCarsAsPromise();
-    this.loading = false;
+    try {
+      this.loading = true;
+      this.cars = await this.getAllRedCarsAsPromise();
+    } catch (e) {
+      this.carRetrievalError = true;
+    } finally {
+      this.loading = false;
+    }
   }
 
   getAllRedCarsAsObservable(): Observable<Array<Car>> {
